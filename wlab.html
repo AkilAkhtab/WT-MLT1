@@ -1,0 +1,400 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programming Club - Membership</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f3f3f3;
+            color: #222;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            display: flex;
+            align-items: center;
+            background-color: #292929;
+            min-height: 44px;
+        }
+
+        .navbar a {
+            display: block;
+            padding: 14px 18px;
+            color: #f5f5f5f9;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .navbar a:hover,
+        .navbar a.active {
+            background-color: #dedede;
+            color: #222;
+        }
+
+        /* Main Container */
+        .container {
+            width: min(100% - 32px, 680px);
+            margin: 24px auto 40px;
+        }
+
+        h1 {
+            margin: 0 0 22px;
+            text-align: center;
+            color: #101c91;
+            font-size: 28px;
+        }
+
+        /* Club Information Card */
+        .club-card {
+            position: relative;
+            max-width: 430px;
+            margin: 0 auto 20px;
+            padding: 18px 20px;
+            background-color: white;
+            border: 1px solid #777;
+            border-radius: 10px;
+            box-shadow: 0 3px 7px rgba(0, 0, 0, 0.28);
+        }
+
+        .club-card h2 {
+            margin: 0 0 12px;
+            color: #16751d;
+            font-size: 21px;
+        }
+
+        .club-card p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        .new-badge {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background-color: red;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        /* Registration Form */
+        fieldset {
+            max-width: 430px;
+            margin: 0 auto;
+            padding: 14px 16px 16px;
+            border: 1px solid #bdbdbd;
+            background-color: #f5f5f5;
+        }
+
+        legend {
+            padding: 0 5px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 135px minmax(0, 1fr);
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .form-row > label,
+        .field-label {
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 7px 8px;
+            border: 1px solid #aaa;
+            border-radius: 3px;
+            background-color: white;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: 2px solid #a8b7ff;
+            border-color: #3949ab;
+        }
+
+        /* Membership Radio Buttons */
+        .radio-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .radio-options label,
+        .agreement {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .radio-options input,
+        .agreement input {
+            margin: 0;
+        }
+
+        /* Reason Textarea */
+        .reason-row {
+            display: block;
+            margin: 12px 0 10px;
+        }
+
+        .reason-row label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        /* Agreement Checkbox */
+        .agreement {
+            margin: 8px 0 14px;
+            font-size: 14px;
+        }
+
+        /* Submit Button */
+        button {
+            padding: 8px 15px;
+            border: 1px solid #999;
+            border-radius: 4px;
+            background-color: #e7e7e7;
+            color: #222;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #d5d5d5;
+        }
+
+        .form-message {
+            margin-top: 12px;
+            color: #16751d;
+            font-size: 14px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .container {
+                width: calc(100% - 20px);
+                margin-top: 18px;
+            }
+
+            h1 {
+                font-size: 23px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 5px;
+            }
+
+            fieldset {
+                padding: 12px;
+            }
+
+            .navbar a {
+                padding: 13px 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a class="active" href="#home">Home</a>
+        <a href="#events">Events</a>
+        <a href="#join">Join</a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container" id="home">
+
+        <h1>Programming Club</h1>
+
+        <!-- Club Information Card -->
+        <section class="club-card">
+            <span class="new-badge">NEW</span>
+
+            <h2>Club Membership</h2>
+
+            <p>
+                Join the Programming Club to take part in contests,
+                workshops and weekly meetups.
+            </p>
+        </section>
+
+        <!-- Membership Form -->
+        <form id="membership-form">
+
+            <fieldset id="join">
+                <legend>Join the Club</legend>
+
+                <!-- Full Name -->
+                <div class="form-row">
+                    <label for="full-name">Full Name:</label>
+                    <input
+                        type="text"
+                        id="full-name"
+                        name="fullName"
+                        required
+                    >
+                </div>
+
+                <!-- Email -->
+                <div class="form-row">
+                    <label for="email">Email:</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                    >
+                </div>
+
+                <!-- Student ID -->
+                <div class="form-row">
+                    <label for="student-id">Student ID:</label>
+                    <input
+                        type="text"
+                        id="student-id"
+                        name="studentId"
+                        placeholder="24-56789-1"
+                        pattern="[0-9]{2}-[0-9]{4,6}-[0-9]"
+                        title="Use the format 24-56789-1"
+                        required
+                    >
+                </div>
+
+                <!-- Age -->
+                <div class="form-row">
+                    <label for="age">Age:</label>
+                    <input
+                        type="number"
+                        id="age"
+                        name="age"
+                        min="16"
+                        max="100"
+                        required
+                    >
+                </div>
+
+                <!-- Membership Type -->
+                <div class="form-row">
+                    <span class="field-label">Membership Type:</span>
+
+                    <div class="radio-options">
+                        <label>
+                            <input
+                                type="radio"
+                                name="membership"
+                                value="General"
+                                required
+                            >
+                            General
+                        </label>
+
+                        <label>
+                            <input
+                                type="radio"
+                                name="membership"
+                                value="Executive"
+                            >
+                            Executive
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Preferred Club -->
+                <div class="form-row">
+                    <label for="preferred-club">Preferred Club:</label>
+
+                    <select
+                        id="preferred-club"
+                        name="preferredClub"
+                        required
+                    >
+                        <option value="">Select a club</option>
+                        <option value="Programming">Programming Club</option>
+                        <option value="Robotics">Robotics Club</option>
+                        <option value="AI">AI Club</option>
+                        <option value="Cybersecurity">Cybersecurity Club</option>
+                    </select>
+                </div>
+
+                <!-- Reason for Joining -->
+                <div class="reason-row">
+                    <label for="reason">
+                        Why do you want to join?
+                    </label>
+
+                    <textarea
+                        id="reason"
+                        name="reason"
+                        rows="4"
+                        required
+                    ></textarea>
+                </div>
+
+                <!-- Agreement Checkbox -->
+                <label class="agreement">
+                    <input
+                        type="checkbox"
+                        name="agree"
+                        required
+                    >
+                    I agree to the club rules
+                </label>
+
+                <!-- Submit Button -->
+                <button type="submit">Join Now</button>
+
+                <!-- Success Message -->
+                <p
+                    class="form-message"
+                    id="form-message"
+                    role="status"
+                    aria-live="polite"
+                ></p>
+
+            </fieldset>
+        </form>
+
+    </main>
+
+</body>
+</html>
