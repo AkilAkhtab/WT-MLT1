@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Blood Donor Registration</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 30px;
+            }
+
+            .container {
+                max-width: 750px;
+                margin: auto;
+                background: white;
+                padding: 25px;
+                border-radius: 10px;
+                box-shadow: 0 0 10px #ccc;
+            }
+
+            h1, h2 {
+                text-align: center;
+                color: #b22222;
+            }
+
+            label {
+                display: block;
+                margin-top: 12px;
+                font-weight: bold;
+            }
+
+            input, select {
+                width: 100%;
+                padding: 9px;
+                margin-top: 5px;
+                box-sizing: border-box;
+            }
+
+            input[type="radio"],
+            input[type="checkbox"] {
+                width: auto;
+            }
+
+            .error {
+                color: red;
+                font-size: 13px;
+            }
+
+            button {
+                padding: 10px 18px;
+                background: #b22222;
+                color: white;
+                border: none;
+                cursor: pointer;
+                border-radius: 5px;
+                margin-top: 15px;
+            }
+
+            button:hover {
+                background: #800000;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 15px;
+            }
+
+            th, td {
+                border: 1px solid #ccc;
+                padding: 10px;
+                text-align: center;
+            }
+
+            th {
+             background: #b22222;
+                color: white;
+            }
+
+            .remove {
+                background: #555;
+                margin: 0;
+            }
+        </style>
+        
+    </head>
+    <body>
+        <div class="container">
+
+            <h1>Blood Donor Registration</h1>
+
+            <form id="regForm" method="post" action="#" novalidate
+                     onsubmit="return validateForm()">
+
+                <label for="fname">Full Name</label>
+                <input type="text" id="fname" name="fname" required minlength="3">
+                <span class="error" id="err-fname"></span>
+
+                <label for="sid">AIUB ID</label>
+                <input type="text" id="sid" name="sid" required pattern="[0-9]{2}-[0-9]{5}-[0-9]">
+                <span class="error" id="err-sid"></span>
+
+                <label for="phone">Mobile</label>
+                <input type="text" id="phone" name="phone" required pattern="[0-9]{11}">
+                <span class="error" id="err-phone"></span>
+
+                <label for="age">Age</label>
+                <input type="number" id="age" name="age" required min="18" max="60">
+                <span class="error" id="err-age"></span>
+
+                <label for="bgroup">Blood Group</label>
+                <select id="bgroup" name="bgroup" required>
+                <option value="">Select blood group</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                </select>
+                <span class="error" id="err-bgroup"></span>
+
+               <label>Donated before?</label>
+
+                <input type="radio" id="donated-yes" name="donated" value="Yes" required>
+                <label for="donated-yes" style="display:inline">Yes</label>
+
+                <input type="radio" id="donated-no" name="donated" value="No" required>
+                <label for="donated-no" style="display:inline">No</label>
+
+                <br>
+                <span class="error" id="err-donated"></span>
+
+                <br>
+
+                <input type="checkbox" id="agree" name="agree" required>
+                <label for="agree" style="display:inline">
+                        I am healthy and willing to donate
+                </label>
+
+                <br>
+                <span class="error" id="err-agree"></span>
+
+                <label for="pass">Password</label>
+                <input type="password" id="pass" name="pass" required minlength="6">
+                <span class="error" id="err-pass"></span>
+
+                <label for="pass2">Confirm Password</label>
+                <input type="password" id="pass2" name="pass2" required>
+                <span class="error" id="err-pass2"></span>
+
+                <br>
+
+                <button type="submit">Register Donor</button>
+
+    </form>
+
+    <h2>Registered Donors</h2>
+
+    <p id="count">Total donors: 0</p>
+
+    <table id="list">
+        <tr>
+            <th>Name</th>
+            <th>ID</th>
+            <th>Blood Group</th>
+            <th>Action</th>
+        </tr>
+    </table>
+
+    </div>
+
+    <script>
+    let donors = [];
+
+    function validateForm() {
+
+        let name = document.getElementById("fname").value.trim();
+        let sid = document.getElementById("sid").value;
+        let phone = document.getElementById("phone").value;
+        let age = document.getElementById("age").value;
+        let group = document.getElementById("bgroup").value;
+        let pass = document.getElementById("pass").value;
+        let pass2 = document.getElementById("pass2").value;
+
+        let donatedYes = document.getElementById("donated-yes").checked;
+        let donatedNo = document.getElementById("donated-no").checked;
+        let agree = document.getElementById("agree").checked;
+
+        document.getElementById("err-fname").innerHTML = "";
+        document.getElementById("err-sid").innerHTML = "";
+        document.getElementById("err-phone").innerHTML = "";
+        document.getElementById("err-age").innerHTML = "";
+        document.getElementById("err-bgroup").innerHTML = "";
+        document.getElementById("err-donated").innerHTML = "";
+        document.getElementById("err-agree").innerHTML = "";
+        document.getElementById("err-pass").innerHTML = "";
+        document.getElementById("err-pass2").innerHTML = "";
+
+        let valid = true;
+
+        if (name.length < 3) {
+            document.getElementById("err-fname").innerHTML =
+                "Name must contain at least 3 characters.";
+            valid = false;
+        }
+
+        let idPattern = /^[0-9]{2}-[0-9]{5}-[0-9]$/;
+
+        if (!idPattern.test(sid)) {
+            document.getElementById("err-sid").innerHTML =
+                "Enter a valid ID (22-12345-1).";
+            valid = false;
+        }
+
+        let phonePattern = /^[0-9]{11}$/;
+
+        if (!phonePattern.test(phone)) {
+            document.getElementById("err-phone").innerHTML =
+                "Mobile must contain exactly 11 digits.";
+            valid = false;
+        }
+
+        let numericAge = Number(age);
+
+        if (age === "" || numericAge < 18 || numericAge > 60) {
+            document.getElementById("err-age").innerHTML =
+                "Age must be between 18 and 60.";
+            valid = false;
+        }
+
+        if (group === "") {
+            document.getElementById("err-bgroup").innerHTML =
+                "Please select a blood group.";
+            valid = false;
+        }
+
+        if (!donatedYes && !donatedNo) {
+            document.getElementById("err-donated").innerHTML =
+                "Please select Yes or No.";
+            valid = false;
+        }
+
+        if (!agree) {
+            document.getElementById("err-agree").innerHTML =
+                "You must confirm your willingness to donate.";
+            valid = false;
+        }
+
+        if (pass.length < 6) {
+            document.getElementById("err-pass").innerHTML =
+                "Password must contain at least 6 characters.";
+            valid = false;
+        }
+
+        if (pass2 === "" || pass2 !== pass) {
+            document.getElementById("err-pass2").innerHTML =
+                "Passwords do not match.";
+            valid = false;
+        }
+
+        if (valid) {
+
+            let donor = {
+                name: name,
+                id: sid,
+                group: group
+            };
+
+            donors.push(donor);
+
+            addDonor(donor, donors.length - 1);
+
+            updateCount();
+
+            document.getElementById("regForm").reset();
+        }
+
+        // Prevent page reload
+        return false;
+    }
+
+
+    
+    function addDonor(donor, index) {
+
+        let table = document.getElementById("list");
+
+        // Create new row
+        let row = document.createElement("tr");
+
+        let nameCell = document.createElement("td");
+        nameCell.textContent = donor.name;
+
+        let idCell = document.createElement("td");
+        idCell.textContent = donor.id;
+
+        let groupCell = document.createElement("td");
+        groupCell.textContent = donor.group;
+
+        let actionCell = document.createElement("td");
+
+        let removeBtn = document.createElement("button");
+        removeBtn.textContent = "Remove";
+        removeBtn.className = "remove";
+
+        // Remove donor when clicked
+        removeBtn.onclick = function () {
+
+            // Remove donor from array
+            donors.splice(index, 1);
+
+            // Rebuild table
+            refreshTable();
+
+        };
+
+        // Append elements
+        actionCell.appendChild(removeBtn);
+
+        row.appendChild(nameCell);
+        row.appendChild(idCell);
+        row.appendChild(groupCell);
+        row.appendChild(actionCell);
+
+        table.appendChild(row);
+    }
+
+
+    // Refresh table after removing a donor
+    function refreshTable() {
+
+        let table = document.getElementById("list");
+
+        // Remove all existing donor rows
+        while (table.rows.length > 1) {
+            table.deleteRow(1);
+        }
+
+        // Add remaining donors again
+        for (let i = 0; i < donors.length; i++) {
+            addDonor(donors[i], i);
+        }
+
+        updateCount();
+    }
+
+
+    // Update total donor count
+    function updateCount() {
+
+        document.getElementById("count").innerHTML =
+            "Total donors: " + donors.length;
+
+    }
+
+</script>
+        
+    </body>
+</html>
